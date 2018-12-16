@@ -1,15 +1,21 @@
-const CACHE_NAME = "firstpwa-v2";
+const CACHE_NAME = "firstpwa-v5";
+const IMAGE_CACHE = 'images-cache';
+const allCaches = [
+  CACHE_NAME,
+  IMAGE_CACHE
+];
 var urlsToCache = [
   "/",
   "/nav.html",
   "/index.html",
   "/pages/home.html",
-  "/pages/info.html",
-  "/pages/about.html",
+  "/pages/popular.html",
+  "/pages/top-rated.html",
   "/pages/contact.html",
   "/css/materialize.min.css",
   "/js/materialize.min.js",
-  "/js/nav.js"
+  "/js/nav.js",
+  "/logo.png"
 ];
 
 self.addEventListener("install", event => {
@@ -20,7 +26,7 @@ self.addEventListener("install", event => {
   )
 });
 
-self.addEventListener("fetch", event => {
+/*self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request, { cacheName: CACHE_NAME })
       .then(response => {
@@ -38,18 +44,43 @@ self.addEventListener("fetch", event => {
       })
   )
 });
-
+*/
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
-        cacheNames.map(cacheName => {
-          if(cacheName != CACHE_NAME){
-            console.log("ServiceWorker: cache " + cacheName + " dihapus");
-            return caches.delete(cacheName)
-          }
+        cacheNames.filter(cacheName => {
+          return cacheName.startsWith('firstpwa-') && !allCaches.includes(cacheName);
+        }).map(cacheName => {
+          return caches.delete(cacheName)
         })
       )
     })
   )
 });
+
+self.addEventListener("fetch", event => {
+  const requestUrl = new URL(event.request.url);
+  if (requestUrl.pathname.includes('.jpg') || requestUrl.pathname.includes('.png')){
+    event.respondWith(serveImage(event.request));
+    return;
+  }else{
+    event.respondWith(
+      caches.match(event.request).then((response) => response || fetch(event.request)),
+    );
+    return;
+  }
+})
+
+function serveImage(req) {
+  return caches.open(IMAGE_CACHE).then( cache => {
+    return cache.match(req.url).then( response => {
+      if (response) return response;
+
+      return fetch(req).then( networkResponse => {
+        cache.put(req.url, networkResponse.clone());
+        return networkResponse;
+      })
+    })
+  })
+}
