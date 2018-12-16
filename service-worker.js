@@ -26,25 +26,6 @@ self.addEventListener("install", event => {
   )
 });
 
-/*self.addEventListener("fetch", event => {
-  event.respondWith(
-    caches.match(event.request, { cacheName: CACHE_NAME })
-      .then(response => {
-        if (response) {
-          console.log("ServiceWorker: Gunakan aset dari cache: ", response.url);
-          return response;
-        }
-
-        console.log(
-          "ServiceWorker: Memuat aset dari server: ",
-          event.request.url
-        );
-
-        return fetch(event.request);
-      })
-  )
-});
-*/
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
