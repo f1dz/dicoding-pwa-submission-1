@@ -1,0 +1,16 @@
+{
+  "name": "Ofid Submission 1",
+  "short_name": "Dicoding",
+  "description": "Aplikasi PWA Submisi 1",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#2962ff",
+  "theme_color": "#2962ff",
+  "icons": [
+      {
+          "src": "logo.png",
+          "sizes": "512x512",
+          "type": "image/png"
+      }
+  ]
+}
