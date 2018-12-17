@@ -1,4 +1,4 @@
-const CACHE_NAME = "firstpwa-v7";
+const CACHE_NAME = "firstpwa-v8";
 var urlsToCache = [
   "/",
   "/nav.html",
@@ -24,18 +24,19 @@ self.addEventListener("install", event => {
   )
 });
 
-self.addEventListener("activate", event => {
+self.addEventListener("activate", function(event) {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
+    caches.keys().then(function(cacheNames) {
       return Promise.all(
-        cacheNames.filter(cacheName => {
-          return cacheName.startsWith('firstpwa-') && !allCaches.includes(cacheName);
-        }).map(cacheName => {
-          return caches.delete(cacheName)
+        cacheNames.map(function(cacheName) {
+          if (cacheName != CACHE_NAME) {
+            console.log("ServiceWorker: cache " + cacheName + " dihapus");
+            return caches.delete(cacheName);
+          }
         })
-      )
+      );
     })
-  )
+  );
 });
 
 self.addEventListener("fetch", event => {

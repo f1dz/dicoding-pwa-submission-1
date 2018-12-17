@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
   <title>My First PWA</title>
-  <meta name="description" content="Submisi 1 PWA"/>
+  <meta name="description" content="Submisi 1 PWA" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#2962ff"/>
-  <link rel="icon" href="logo.png" sizes="32x32">
+  <meta name="theme-color" content="#2962ff" />
   <link rel="manifest" href="/manifest.json">
   <link rel="stylesheet" href="css/materialize.min.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
+
 <body>
   <!-- Navigasi -->
   <nav class="indigo darken-3" role="navigation">
     <div class="nav-wrapper container">
       <a href="#" class="brand-logo" id="logo-container">My Movies</a>
       <a href="#" class="sidenav-trigger pulse" data-target="nav-mobile"><i class="material-icons">menu</i></a>
-      
+
       <ul class="topnav right hide-on-med-and-down"></ul>
       <ul class="sidenav" id="nav-mobile"></ul>
     </div>
@@ -27,17 +28,18 @@
   <script src="js/materialize.min.js"></script>
   <script src="js/nav.js"></script>
   <script>
-    if ('serviceWorker' in navigator){" "}
-    {window.addEventListener("load", function(){
-      navigator.serviceWorker
-      .register("/service-worker.js")
-      .then(() => {
-        console.log("Pendaftaram SW berhasil");
-      }).then(() => {
-        console.log("Pendaftaran ServiceWorker gagal");
-      });
-    })}{" "}
-    //else { console.log("ServiceWorker belum didukung browser ini.")};
+    if ('serviceWorker' in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker
+          .register("/service-worker.js")
+          .then(() => {
+            console.log("Pendaftaram SW berhasil");
+          }).catch(() => {
+            console.log("Pendaftaran ServiceWorker gagal");
+          });
+      })
+    } else { console.log("ServiceWorker belum didukung browser ini.") };
   </script>
 </body>
+
 </html>
