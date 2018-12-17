@@ -1,4 +1,4 @@
-const CACHE_NAME = "firstpwa-v5";
+const CACHE_NAME = "firstpwa-v6";
 const IMAGE_CACHE = 'images-cache';
 const allCaches = [
   CACHE_NAME,
@@ -15,7 +15,8 @@ var urlsToCache = [
   "/css/materialize.min.css",
   "/js/materialize.min.js",
   "/js/nav.js",
-  "/logo.png"
+  "/logo.png",
+  "https://fonts.googleapis.com/icon?family=Material+Icons"
 ];
 
 self.addEventListener("install", event => {
