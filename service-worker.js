@@ -1,9 +1,4 @@
-const CACHE_NAME = "firstpwa-v6";
-const IMAGE_CACHE = 'images-cache';
-const allCaches = [
-  CACHE_NAME,
-  IMAGE_CACHE
-];
+const CACHE_NAME = "firstpwa-v7";
 var urlsToCache = [
   "/",
   "/nav.html",
@@ -16,7 +11,9 @@ var urlsToCache = [
   "/js/materialize.min.js",
   "/js/nav.js",
   "/logo.png",
-  "https://fonts.googleapis.com/icon?family=Material+Icons"
+  "/img/cinema.jpg",
+  'https://fonts.googleapis.com/icon?family=Material+Icons',
+  "https://fonts.gstatic.com/s/materialicons/v41/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2"
 ];
 
 self.addEventListener("install", event => {
@@ -42,27 +39,18 @@ self.addEventListener("activate", event => {
 });
 
 self.addEventListener("fetch", event => {
-  const requestUrl = new URL(event.request.url);
-  if (requestUrl.pathname.includes('.jpg') || requestUrl.pathname.includes('.png')){
-    event.respondWith(serveImage(event.request));
-    return;
-  }else{
-    event.respondWith(
-      caches.match(event.request).then((response) => response || fetch(event.request)),
-    );
-    return;
-  }
-})
-
-function serveImage(req) {
-  return caches.open(IMAGE_CACHE).then( cache => {
-    return cache.match(req.url).then( response => {
-      if (response) return response;
-
-      return fetch(req).then( networkResponse => {
-        cache.put(req.url, networkResponse.clone());
-        return networkResponse;
+  event.respondWith(
+    caches.match(event.request, { cacheName: CACHE_NAME })
+      .then(response => {
+        if (response) {
+          console.log("ServiceWorker: Gunakan aset dari cache: ", response.url);
+          return response;
+        }
+         console.log(
+          "ServiceWorker: Memuat aset dari server: ",
+          event.request.url
+        );
+         return fetch(event.request);
       })
-    })
-  })
-}
+  )
+});
